@@ -10,19 +10,18 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const handleEmailChange = (e) => {
-        console.log(e.target.value)
         setEmail(e.target.value)
     }
     const handlePasswordChange = (e) => {
-        console.log(e.target.value)
         setPassword(e.target.value)
     }
     const submit = () =>{
         UserService.Login({email,password}).then((res) => {
-            console.log('res', res)
+          console.log('res.status', res)
             if (res.status === 200) {
                 console.log('Success to login');
                 dispatch(login(res.data))
+                navigate('/dashboard')
             }
           })
           .catch((error) => {

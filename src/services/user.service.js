@@ -63,5 +63,7 @@ function handleResponse(response) {
         //   return Promise.reject(val);
         // });
       }
+      console.log(data)
+
       return data;
     });}

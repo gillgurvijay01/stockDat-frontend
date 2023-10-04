@@ -1,16 +1,19 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { UserService } from '../../services/user.service'
 import { useSelector, useDispatch } from 'react-redux'
-import { login } from '../../app/slice/loginSlice/loginSlice'
+import { login,logout } from '../../app/slice/loginSlice/loginSlice'
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import {BeatLoader} from 'react-spinners';
+import { useSnackbar } from 'notistack';
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
     }
@@ -21,14 +24,33 @@ const SignUp = () => {
         setName(e.target.value)
     }
     const submit = () =>{
-        UserService.SignUp({email,password}).then((res) => {
+        setIsLoading(true)
+        if(!email){
+            enqueueSnackbar("Fill the Email Column", { variant: 'warning' })
+            setIsLoading(false)
+            return;
+        }
+        else  if(!name){
+            enqueueSnackbar("Fill the Name Column", { variant: 'warning' })
+            setIsLoading(false)
+            return;
+        }
+        else if(!password){
+            enqueueSnackbar("Fill the Password Column", { variant: 'warning' })
+            setIsLoading(false)
+            return;
+        }
+        UserService.SignUp({email,name,password}).then((res) => {
             console.log('res', res)
             if (res.status === 200) {
                 console.log('Success to login');
                 dispatch(login(res.data))
+                setIsLoading(false);
             }
           })
           .catch((error) => {
+            setIsLoading(false);
+            console.log('error', error)
             console.log('Failed to login')
         });
   
@@ -65,7 +87,8 @@ const SignUp = () => {
           type="email"
           variant="outlined"
           margin="normal"
-          onChange={handleNameChange}
+          onChange={handleEmailChange}
+          disabled = {isLoading}
           fullWidth
         />
         <TextField
@@ -73,7 +96,8 @@ const SignUp = () => {
           type="text"
           variant="outlined"
           margin="normal"
-          onChange={handleEmailChange}
+          onChange={handleNameChange}
+          disabled = {isLoading}
           fullWidth
         />
         <TextField
@@ -81,6 +105,7 @@ const SignUp = () => {
           type="password"
           variant="outlined"
           margin="normal"
+          disabled = {isLoading}
           onChange={handlePasswordChange}
           fullWidth
         />
@@ -89,9 +114,12 @@ const SignUp = () => {
           color="primary"
           size="large"
           onClick={submit}
+          disabled = {isLoading}
           sx={{ marginTop: '20px' }}
         >
-          SignUp
+            {isLoading ? <BeatLoader color="hsla(210, 79%, 46%, 1)" />
+:         "SignUp"
+}
         </Button>
         <Typography
             variant="body2"
@@ -103,6 +131,7 @@ const SignUp = () => {
                 color: 'blue',
               },
             }}
+            // onClick = {()=>dispatch(logout())}
             onClick= {()=>navigate('/')}
           >
             Existing user? Click here to Log in

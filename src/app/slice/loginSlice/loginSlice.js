@@ -4,7 +4,8 @@ const initialState = {
   user : {
     jwt : "",
     email:"",
-    password:""
+    userId:"",
+    name:""
   }
 }
 
@@ -15,7 +16,19 @@ export const LoginSlice= createSlice({
     login: (state,action) => {
         state.user.jwt = action.payload.jwt;
         state.user.email = action.payload.email
-        state.user.password = action.payload.password
+        state.user.userId = action.payload.userId
+        state.user.name = action.payload.name
+
+        localStorage.setItem('user',JSON.stringify(state.user));
+
+    },
+    logout:(state)=>{
+       state.user.jwt = ""
+        state.user.email = ""
+        state.user.userId = ""
+        state.user.name = ""
+      localStorage.removeItem('user');
+      localStorage.removeItem('reduxState')
     },
     decrement: (state) => {
       state.value -= 1
@@ -27,6 +40,6 @@ export const LoginSlice= createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { login, decrement, incrementByAmount } = LoginSlice.actions
+export const { login,logout, decrement, incrementByAmount } = LoginSlice.actions
 
 export default LoginSlice.reducer
