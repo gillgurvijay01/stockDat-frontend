@@ -13,8 +13,11 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import { useNavigate } from 'react-router-dom';
+
 const Sidebar = () => {
         // To check the width of screen
+        const navigate = useNavigate();
         const [position, setPosition] = useState(window.innerWidth < 768 ? 'top' : 'left');
 
         const [menu, setMenu] = useState({top:false,left:false});
@@ -45,10 +48,11 @@ const Sidebar = () => {
               onKeyDown={toggleDrawer(anchor, false)}
             >
               <List>
-                {['Home', 'List', 'Add Category', 'Add Subcategory'].map((text, index) => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
+                {['Dashboard', 'List', 'Category', 'Subcategory', 'Supplier'].map((text, index) => (
+                  <ListItem key={text} sx={true} disablePadding>
+                    <ListItemButton onClick={()=>navigate(`/${text.toLocaleLowerCase()}`)}>
+                      <ListItemIcon >
+                       
                         {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                       </ListItemIcon>
                       <ListItemText primary={text} />
@@ -58,11 +62,10 @@ const Sidebar = () => {
               </List>
               <Divider />
               <List>
-                {['Options', 'Profile', 'Logout'].map((text, index) => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
+                {['Profile', 'Logout'].map((text, index) => (
+                  <ListItem key={text} disablePadding >
+                    <ListItemButton onClick={()=>navigate(`/${text.toLocaleLowerCase()}`)}>
                       <ListItemIcon>
-                        {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                       </ListItemIcon>
                       <ListItemText primary={text} />
                     </ListItemButton>
