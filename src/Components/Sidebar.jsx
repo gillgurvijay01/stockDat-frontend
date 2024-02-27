@@ -92,7 +92,7 @@ const Sidebar = () => {
     </Drawer>
           </IconButton>
           <Typography variant="h6" color="inherit" component="div">
-            Photos
+            StockDat
           </Typography>
         </Toolbar>
       </AppBar>

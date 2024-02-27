@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import Cookies from 'js-cookie';
 
 const initialState = {
   user : {
@@ -18,6 +19,7 @@ export const LoginSlice= createSlice({
         state.user.email = action.payload.email
         state.user.userId = action.payload.userId
         state.user.name = action.payload.name
+        Cookies.set('user', state.user.userId, { expires: 60*60*6 });
 
         localStorage.setItem('user',JSON.stringify(state.user));
 

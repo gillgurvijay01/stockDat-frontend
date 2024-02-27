@@ -17,7 +17,6 @@ const Login = () => {
     }
     const submit = () =>{
         UserService.Login({email,password}).then((res) => {
-          console.log('res.status', res)
             if (res.status === 200) {
                 console.log('Success to login');
                 dispatch(login(res.data))

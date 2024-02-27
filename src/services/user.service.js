@@ -2,7 +2,21 @@ import GlobalConfig from "../config/GlobalConfig";
 import { authHeader } from "../helpers/auth-header";
 export const UserService = {
     Login,
-    SignUp
+    SignUp,
+    logout,
+    getList,
+}
+
+function getList(token){
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader(token),
+    body: JSON.stringify(),
+  };
+  return fetch(
+    `${GlobalConfig.baseUrl}/list`,
+    requestOptions
+  ).then(handleResponse);
 }
 function Login(data){
     const requestOptions = {
